@@ -25,17 +25,67 @@
         </p>
       </div>
     </section>
+
+    <section class="section">
+      <div class="card-section">
+        <img src="@/assets/images/planet.jpg" alt="" />
+        <p class="p-section p-section-color-1">Des planètes à perte de vue.</p>
+      </div>
+    </section>
   </div>
 </template>
 
 <script>
-//import HelloWorld from '@/components/HelloWorld.vue'
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(ScrollTrigger);
 
 export default {
-  // name: 'HomeView',
-  // components: {
-  //   HelloWorld
-  // }
+  data() {
+    return {};
+  },
+  methods: {
+    animTitle() {
+      const tl = gsap.timeline();
+      
+      tl.to(".p-section-title", {
+        opacity: 1,
+        ease: "power3.out",
+        stagger: 5,
+        duration: 5,
+        delay: 1,
+      });
+      tl.play();
+    },
+    animScroll() {
+      gsap.utils.toArray(".p-section").forEach((el) => {
+        ScrollTrigger.create({
+          trigger: el,
+          start: "bottom bottom",
+          end: "top top",
+          onEnter: function () {
+            console.log("ok");
+            el.style.transform = "translateX(100px)";
+          },
+          onLeave: function () {
+            console.log("ko");
+          },
+          onLeaveBack: function () {
+            console.log("leaveback");
+            el.style.transform = "translateX(0)";
+          },
+          onEnterBack: function () {
+            console.log("enterback");
+          },
+        });
+      });
+    },
+  },
+  mounted() {
+    this.animScroll();
+    this.animTitle();
+  },
 };
 </script>
 
@@ -46,7 +96,6 @@ export default {
 
   --font-section: "Poppins", sans-serif;
 }
-
 .home {
   display: flex;
   flex-direction: column;
@@ -57,6 +106,7 @@ export default {
       font-size: clamp(18px, 2vw, 40px);
     }
     & .header-icon {
+      position: fixed;
       padding: 1%;
       background: var(--gradient-1);
       background-clip: text;
@@ -66,6 +116,7 @@ export default {
     }
   }
   & .section-title {
+    margin-top: 5%;
     & .p-section-title {
       width: 60vw;
       margin: auto;
@@ -76,6 +127,7 @@ export default {
       font-size: clamp(30px, 9vw, 90px);
       color: transparent;
       word-spacing: 100vw;
+      opacity: 0;
     }
   }
   & .section,
