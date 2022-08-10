@@ -1,5 +1,5 @@
 <template>
-  <router-view/>
+  <router-view />
 </template>
 
 <style lang="scss">
@@ -9,6 +9,8 @@
   margin: 0;
 }
 body {
-  background: rgb(32, 32, 32);
+  background: linear-gradient(-45deg, rgb(20, 0, 7), rgb(20, 14, 34));;
+  height: 100%;
+  width: 100%;
 }
 </style>
