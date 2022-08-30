@@ -25,7 +25,7 @@
     <section class="section">
       <div class="card-section">
         <div class="container-img">
-          <img src="@/assets/images/planet.jpg" alt="" />
+          <img class="image" src="@/assets/images/planet.jpg" alt="" />
         </div>
         <p class="p-section right p-section-color-1">
           Des planètes à perte de vue.
@@ -33,10 +33,21 @@
       </div>
     </section>
 
+    <!-- <section class="section" v-for="content in contents" :key="content">
+      <div class="card-section">
+        <div class="container-img">
+          <img :src="content.img_src" alt="" />
+        </div>
+        <p class="p-section right p-section-color-1">
+          {{ content.camera.full_name }}
+        </p>
+      </div>
+    </section> -->
+
     <section class="section-reverse">
       <div class="card-section-reverse">
         <div class="container-img">
-          <img src="@/assets/images/moon.jpg" alt="" />
+          <img class="image" src="@/assets/images/moon.jpg" alt="" />
         </div>
         <p class="p-section left p-section-color-1">
           Comme vous ne les avez jamais vu.
@@ -47,7 +58,7 @@
     <section class="section">
       <div class="card-section">
         <div class="container-img">
-          <img src="@/assets/images/planet.jpg" alt="" />
+          <img class="image" src="@/assets/images/planet.jpg" alt="" />
         </div>
         <p class="p-section right p-section-color-1">
           Des planètes à perte de vue.
@@ -81,7 +92,9 @@ import Scrollbar from "smooth-scrollbar";
 
 export default {
   data() {
-    return {};
+    return {
+      contents: undefined,
+    };
   },
   methods: {
     animTitle() {
@@ -155,7 +168,7 @@ export default {
       });
     },
     animImage() {
-      gsap.utils.toArray("img").forEach((el) => {
+      gsap.utils.toArray(".image").forEach((el) => {
         ScrollTrigger.create({
           trigger: el,
           start: "top center",
@@ -254,12 +267,22 @@ export default {
       this.animTextLeft();
       this.animImage();
     },
+    fetchApiNasa() {
+      fetch("https://api.nasa.gov/mars-photos/api/v1/rovers/curiosity/photos?sol=3000&page=1&api_key=Y3F5XcTQZf4aqwZVe5cEeilj9Wzsf1jW0GABu6aE", {
+        method: "GET"
+      })
+      .then((response) => response.json())
+      .then((data) => {
+        this.contents = data.photos
+      })
+    },
   },
   mounted() {
     this.animTitle();
     this.scroll();
     this.animBG();
     this.animSVG();
+    this.fetchApiNasa();
   },
 };
 </script>
@@ -284,7 +307,7 @@ export default {
   & .header-icon {
     position: absolute;
     right: 0;
-    top: .5%;
+    top: 0;
     display: flex;
     align-items: center;
     padding: 1%;
@@ -319,6 +342,7 @@ export default {
       color: transparent;
       word-spacing: 100vw;
       opacity: 0;
+      mix-blend-mode: exclusion;
     }
     & .pulse {
       animation: pulse 1s ease-in-out;
